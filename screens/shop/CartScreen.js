@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, View, StyleSheet, Text, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 import Colors from '../../constants/Colors';
+import CartItem from '../../components/shop/CartItem';
 
 const CartScreen = (props) => {
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
@@ -10,10 +11,10 @@ const CartScreen = (props) => {
     for (const key in state.cart.items) {
       transformedItems.push({
         productId: key,
-        productTitle: state.cart.items[key].title,
-        productPrice: state.cart.items[key].price,
-        productQuantity: state.cart.items[key].quanitity,
-        productSum: state.cart.items[key].sum,
+        productTitle: state.cart.items[key].productTitle,
+        productPrice: state.cart.items[key].productPrice,
+        quantity: state.cart.items[key].quantity,
+        sum: state.cart.items[key].sum,
       });
     }
     return transformedItems;
@@ -33,9 +34,18 @@ const CartScreen = (props) => {
         />
       </View>
       <View>
-        <FlatList>
-          <Text>CART ITEMS</Text>
-        </FlatList>
+        <FlatList
+          data={cartItems}
+          keyExtractor={(item) => item.productId}
+          renderItem={(itemData) => (
+            <CartItem
+              quantity={itemData.item.quantity}
+              title={itemData.item.productTitle}
+              amount={itemData.item.sum}
+              onRemove={() => {}}
+            />
+          )}
+        ></FlatList>
       </View>
     </View>
   );
